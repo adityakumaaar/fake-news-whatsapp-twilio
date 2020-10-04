@@ -20,9 +20,9 @@ function randomInteger(min, max) {
 
 let createImage = async ()=> {
     const font32 = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
-    let bgImages = ['https://i.ibb.co/vP0qHsK/Basic-Template-RED.png', 
-                    'https://i.ibb.co/NVmwkjs/Basic-Template-GREEN.png', 
-                    'https://i.ibb.co/Lkms9nG/Basic-Template-EMBER.png'];
+    let bgImages = ['https://i.ibb.co/SVLWnrs/Basic-Template-RED.png', 
+                    'https://i.ibb.co/vxV2CYd/Basic-Template-GREEN.png', 
+                    'https://i.ibb.co/r4Gzdds/Basic-Template-EMBER.png'];
 
     
     let fakePercent = randomInteger(0,100);
@@ -54,11 +54,15 @@ app.post("/", async(req,res)=>{
 
     console.log(req.body.Body);
     if(isValidURL(req.body.Body)){
-        message = new MessagingResponse().message("Here is our verdict.");
-        message.media('https://whatsapp-fakenews-twilio.herokuapp.com/tempimg/newImage.png');
+        message = new MessagingResponse()
+        .message("Here is our verdict for \n")
+        .message(req.body.Body)
+        .message("\nPlease add the number +91-1234567890 to verify viral news!");
         await createImage().catch(console.error);
+        message.media('https://whatsapp-fakenews-twilio.herokuapp.com/tempimg/newImage.png');
     }else{
-        message = new MessagingResponse().message("Please provide a valid url with http(s)");
+        message = new MessagingResponse()
+        .message("Please provide a valid url with http(s)");
     }
     
     res.writeHead(200, {'Content-Type': 'text/xml'});
