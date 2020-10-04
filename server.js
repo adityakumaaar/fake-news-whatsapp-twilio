@@ -27,14 +27,18 @@ let createImage = async ()=> {
     
     let fakePercent = randomInteger(0,100);
     let selectedImage;
+    let verdict;
     if(fakePercent < 20){
         selectedImage = bgImages[1];
+        verdict = "FAKE 🔴";
     }
     else if(fakePercent >=20 && fakePercent<=70){
         selectedImage = bgImages[2];
+        verdict = "MISLEADING 🟡";
     }
     else{
         selectedImage = bgImages[0];
+        verdict = "GENUINE 🟢";
     }    
     const background = await Jimp.read(selectedImage);
     
@@ -47,6 +51,8 @@ let createImage = async ()=> {
     background.print(font32, 180, 540, curDate+" "+curTime);
 
     await background.writeAsync('./public/tempimg/newImage.png');
+
+    return verdict;
 }
 
 app.post("/", async(req,res)=>{
@@ -54,11 +60,8 @@ app.post("/", async(req,res)=>{
 
     console.log(req.body.Body);
     if(isValidURL(req.body.Body)){
-        message = new MessagingResponse()
-        .message("Here is our verdict for \n")
-        .message(req.body.Body)
-        .message("\nPlease add the number +91-1234567890 to verify viral news!");
-        await createImage().catch(console.error);
+        let verdict = await createImage().catch(console.error);
+        message = new MessagingResponse().message("Here is our verdict: " + verdict + " for \n" + req.body.Body + "\n\n" + "Please add the number +91-1234567890 to verify viral news!");
         message.media('https://whatsapp-fakenews-twilio.herokuapp.com/tempimg/newImage.png');
     }else{
         message = new MessagingResponse()
