@@ -29,7 +29,7 @@ let createImage = async ()=> {
     let verdict;
     if(fakePercent < 20){
         selectedImage = bgImages[1];
-        verdict = "FAKE 🔴";
+        verdict = "GENUINE 🟢";
     }
     else if(fakePercent >=20 && fakePercent<=70){
         selectedImage = bgImages[2];
@@ -37,7 +37,7 @@ let createImage = async ()=> {
     }
     else{
         selectedImage = bgImages[0];
-        verdict = "GENUINE 🟢";
+        verdict = "FAKE 🔴";
     }    
     const background = await Jimp.read(selectedImage);
     
