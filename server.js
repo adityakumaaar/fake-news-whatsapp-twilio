@@ -4,31 +4,6 @@ const Jimp = require('jimp');
 const axios = require('axios').default;
 const { MessagingResponse } = require('twilio').twiml;
 
-// const MessagingResponse = require('twilio').twiml.MessagingResponse;
-
-// async function getData(link) {
-//     const encodedLink = encodeURIComponent(link);
-//     try {
-//         let urlStr = 'https://api.factmata.com/api/v0.1/score/url?url='+encodedLink+'&include_content=false';
-//         // console.log(urlStr);
-//         const response = await axios.get(urlStr);
-//         // console.log(response.data);
-
-//         const dataRecieved = response.data;
-        
-//         const title = response.data.title;
-
-//         console.log(dataRecieved);
-//         console.log(title);
-//         return new Promise((resolve, reject)=>{
-//             resolve([title, dataRecieved]);
-//         });
-//     } 
-//     catch (error) {
-//         console.error(error);
-//     }
-// }
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static('public'))
@@ -80,7 +55,7 @@ app.post("/", async(req,res)=>{
     console.log(req.body.Body);
     if(isValidURL(req.body.Body)){
         message = new MessagingResponse().message("Here is our verdict.");
-        message.media('http://a1f0b53681a8.ngrok.io/tempimg/newImage.png');
+        message.media('https://whatsapp-fakenews-twilio.herokuapp.com/tempimg/newImage.png');
         await createImage().catch(console.error);
     }else{
         message = new MessagingResponse().message("Please provide a valid url with http(s)");
