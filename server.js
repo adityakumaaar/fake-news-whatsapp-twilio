@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const Jimp = require('jimp');
-const axios = require('axios').default;
 const { MessagingResponse } = require('twilio').twiml;
 
 const app = express();
