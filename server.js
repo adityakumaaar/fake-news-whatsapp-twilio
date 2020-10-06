@@ -43,11 +43,15 @@ let createImage = async ()=> {
     
     background.print(font32, 360, 110, fakePercent);
 
-    let curDate = new Date().toLocaleDateString();
-    let curTime = new Date().toLocaleTimeString();
-    console.log(fakePercent + " " + curDate + " " + curTime);
-    const font16 = await Jimp.loadFont(Jimp.FONT_SANS_16_BLACK);
-    background.print(font32, 180, 540, curDate+" "+curTime);
+    let ISTTime = new Date(new Date().getTime() + (330 + new Date().getTimezoneOffset())*60000);
+    let ISTDate = ISTTime.toDateString();
+    let hoursIST = ISTTime.getHours();
+    let minutesIST = ISTTime.getMinutes();
+    minutesIST<10?(minutesIST='0'+minutesIST):(minutesIST=minutesIST);
+
+    console.log(fakePercent + " " + hoursIST + " " + minutesIST);
+    background.print(font32, 155, 540, hoursIST + ":" + minutesIST);
+    background.print(font32, 245, 540, ISTDate);
 
     await background.writeAsync('./public/tempimg/newImage.png');
 
